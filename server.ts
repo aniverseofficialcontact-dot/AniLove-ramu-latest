@@ -3395,12 +3395,33 @@ function generateUniversalFallbackStream(input: {
     };
   }
 
+  const subOrDub = isDub ? 'dub' : 'sub';
   const availableServers = [
-    { name: 'VidLink Ultra HD', type: isDub ? 'DUB' : 'SUB', linkId: `https://vidlink.pro/anime/${anilistId}/${epNum}?dub=${isDub ? 'true' : 'false'}` },
-    { name: 'AutoEmbed Multi-Source', type: isDub ? 'DUB' : 'SUB', linkId: `https://autoembed.co/anime/anilist/${anilistId}/${epNum}?dub=${isDub ? 1 : 0}` },
-    { name: 'VidSrc Fast Mirror', type: isDub ? 'DUB' : 'SUB', linkId: `https://vidsrc.cc/v2/embed/anime/${anilistId}/${epNum}?dub=${isDub ? 'true' : 'false'}` },
-    { name: 'SmashyStream Engine', type: 'SUB', linkId: `https://player.smashystream.com/anime/${anilistId}/${epNum}` },
-    { name: '2Embed High Speed', type: isDub ? 'DUB' : 'SUB', linkId: `https://www.2embed.cc/embedanime/${encodeURIComponent(slug)}-episode-${epNum}` },
+    {
+      name: 'VidLink Ultra HD',
+      type: isDub ? 'DUB' : 'SUB',
+      linkId: `https://vidlink.pro/anime/${anilistId}/${epNum}/${subOrDub}?fallback=true&primaryColor=6366f1&secondaryColor=1e1b4b&icons=vid`,
+    },
+    {
+      name: '2Embed High Speed',
+      type: isDub ? 'DUB' : 'SUB',
+      linkId: `https://www.2embed.cc/embedanime/${encodeURIComponent(slug)}-episode-${epNum}`,
+    },
+    {
+      name: 'SmashyStream Engine',
+      type: 'SUB',
+      linkId: `https://player.smashystream.com/anime/${anilistId}/${epNum}`,
+    },
+    {
+      name: 'AutoEmbed Multi-Source',
+      type: isDub ? 'DUB' : 'SUB',
+      linkId: `https://autoembed.co/anime/anilist/${anilistId}/${epNum}?dub=${isDub ? 1 : 0}`,
+    },
+    {
+      name: 'VidSrc Fast Mirror',
+      type: isDub ? 'DUB' : 'SUB',
+      linkId: `https://vidsrc.cc/v2/embed/anime/${anilistId}/${epNum}?dub=${isDub ? 'true' : 'false'}`,
+    },
   ];
 
   let selected = availableServers[0];

@@ -251,16 +251,38 @@ export function createDirectStreamSource(
   serverName?: string
 ): StreamSource {
   const anilistId = anime.id || 1;
+  const malId = anime.idMal || anime.id || 1;
   const isDub = language === 'DUB';
+  const subOrDub = isDub ? 'dub' : 'sub';
   const displayTitle = anime.title?.english || anime.title?.romaji || anime.title?.userPreferred || 'Anime';
   const cleanSlug = displayTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
   const availableServers: AvailableServerOption[] = [
-    { name: 'VidLink Ultra HD', type: isDub ? 'DUB' : 'SUB', linkId: `https://vidlink.pro/anime/${anilistId}/${episodeNumber}?dub=${isDub ? 'true' : 'false'}` },
-    { name: 'AutoEmbed Multi-Source', type: isDub ? 'DUB' : 'SUB', linkId: `https://autoembed.co/anime/anilist/${anilistId}/${episodeNumber}?dub=${isDub ? 1 : 0}` },
-    { name: 'VidSrc Fast Mirror', type: isDub ? 'DUB' : 'SUB', linkId: `https://vidsrc.cc/v2/embed/anime/${anilistId}/${episodeNumber}?dub=${isDub ? 'true' : 'false'}` },
-    { name: 'SmashyStream Engine', type: 'SUB', linkId: `https://player.smashystream.com/anime/${anilistId}/${episodeNumber}` },
-    { name: '2Embed CDN', type: isDub ? 'DUB' : 'SUB', linkId: `https://www.2embed.cc/embedanime/${encodeURIComponent(cleanSlug)}-episode-${episodeNumber}` },
+    {
+      name: 'VidLink Ultra HD',
+      type: isDub ? 'DUB' : 'SUB',
+      linkId: `https://vidlink.pro/anime/${malId}/${episodeNumber}/${subOrDub}?fallback=true&primaryColor=6366f1&secondaryColor=1e1b4b&icons=vid`,
+    },
+    {
+      name: '2Embed CDN',
+      type: isDub ? 'DUB' : 'SUB',
+      linkId: `https://www.2embed.cc/embedanime/${encodeURIComponent(cleanSlug)}-episode-${episodeNumber}`,
+    },
+    {
+      name: 'SmashyStream Engine',
+      type: 'SUB',
+      linkId: `https://player.smashystream.com/anime/${anilistId}/${episodeNumber}`,
+    },
+    {
+      name: 'AutoEmbed Multi-Source',
+      type: isDub ? 'DUB' : 'SUB',
+      linkId: `https://autoembed.co/anime/anilist/${anilistId}/${episodeNumber}?dub=${isDub ? 1 : 0}`,
+    },
+    {
+      name: 'VidSrc Fast Mirror',
+      type: isDub ? 'DUB' : 'SUB',
+      linkId: `https://vidsrc.cc/v2/embed/anime/${anilistId}/${episodeNumber}?dub=${isDub ? 'true' : 'false'}`,
+    },
   ];
 
   let selectedUrl = availableServers[0].linkId;
